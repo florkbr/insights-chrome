@@ -51,7 +51,7 @@ const spreadAdditionalHeaders = (options: RequestInit | undefined) => {
   return additionalHeaders;
 };
 
-export function init(store: Store, authRef: React.MutableRefObject<AuthContextProps>) {
+export function init(store: Store, getToken: () => string) {
   const open = window.XMLHttpRequest.prototype.open;
   const send = window.XMLHttpRequest.prototype.send;
   const setRequestHeader = window.XMLHttpRequest.prototype.setRequestHeader;
@@ -90,7 +90,7 @@ export function init(store: Store, authRef: React.MutableRefObject<AuthContextPr
     if (shouldInjectAuthHeaders((this as XMLHttpRequest & { _url: string })._url)) {
       if (!authRequests.has((this as XMLHttpRequest & { _url: string })._url)) {
         // Send Auth header, it will be changed to Authorization later down the line
-        this.setRequestHeader('Auth', `Bearer ${authRef.current.user?.access_token}`);
+        this.setRequestHeader('Auth', `Bearer ${getToken()}`);
       }
     }
     // eslint-disable-line func-names
@@ -121,7 +121,7 @@ export function init(store: Store, authRef: React.MutableRefObject<AuthContextPr
     const request: Request = new Request(input, init);
 
     if (shouldInjectAuthHeaders(input) && !request.headers.has('Authorization')) {
-      request.headers.append('Authorization', `Bearer ${authRef.current.user?.access_token}`);
+      request.headers.append('Authorization', `Bearer ${getToken()}`);
     }
 
     const prom = oldFetch.apply(this, [request, ...rest]);
