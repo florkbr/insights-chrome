@@ -1,4 +1,4 @@
-# Insights Chrome
+# Insights Chrome - foobar
 
 The "wrapper" around your application!
 
