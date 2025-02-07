@@ -113,11 +113,11 @@ const RootApp = memo(({ accountId }: { accountId?: string }) => {
             <NotEntitledModal />
           </Suspense>
           <Suspense fallback={null}></Suspense>
-          <QuickStartContainer {...quickStartProps}>
-            <HelpTopicContainer helpTopics={helpTopics}>
+          {/* <QuickStartContainer {...quickStartProps}>
+            <HelpTopicContainer helpTopics={helpTopics}> */}
               <ScalprumRoot config={config} quickstartsAPI={quickstartsAPI} helpTopicsAPI={helpTopicsAPI} />
-            </HelpTopicContainer>
-          </QuickStartContainer>
+            {/* </HelpTopicContainer>
+          </QuickStartContainer> */}
         </FeatureFlagsProvider>
       </SegmentProvider>
     </HistoryRouter>

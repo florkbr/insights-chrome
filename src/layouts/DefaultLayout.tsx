@@ -72,11 +72,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ hasBanner, selectedAccoun
   const intl = useIntl();
   const { loaded, schema, noNav } = useNavigation();
   const setIsNotificationDrawerReady = useSetAtom(notificationDrawerReadyAtom);
-  const [RegisterDrawerModule, setRegisterDrawerModule] = useState<React.FC | null>(null);
   const getNotificationsDrawer = async () => {
     try {
-      const RegisterDrawerModule = await getModule('notifications', './RegisterDrawerModule');
-      setRegisterDrawerModule(RegisterDrawerModule);
+      const registerDrawerModule = await getModule('notifications', './RegisterDrawerModule');
+      registerDrawerModule();
       setIsNotificationDrawerReady(true);
     } catch (error) {
       console.error('Failed to register notifications drawer module', error);
@@ -108,7 +107,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ hasBanner, selectedAccoun
         onNotificationDrawerExpand: focusDrawer,
         notificationDrawer: (
           <>
-            {RegisterDrawerModule && <RegisterDrawerModule />}
             <DrawerPanel ref={drawerPanelRef} toggleDrawer={toggleDrawer} />
           </>
         ),
