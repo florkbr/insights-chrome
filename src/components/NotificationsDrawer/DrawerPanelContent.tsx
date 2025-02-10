@@ -16,12 +16,12 @@ export type DrawerPanelProps = {
 const NOTIF_DRAWER_MODULE = '@notif-module/drawer';
 
 const DrawerPanelBase: React.FC<DrawerPanelProps> = ({ panelRef, toggleDrawer }) => {
-  debugger;
   const auth = useContext(ChromeAuthContext);
   const isOrgAdmin = auth?.user?.identity?.user?.is_org_admin;
   const { getUserPermissions } = useContext(InternalChromeContext);
   const { DrawerPanel, useNotificationsDrawer } = getSharedScope()[NOTIF_DRAWER_MODULE]['1.0.0'].get();
   const isNotificationsDrawerReady = useAtomValue(notificationDrawerReadyAtom);
+  const { state, initialize } = useNotificationsDrawer();
   const notificationProps = {
     isOrgAdmin: isOrgAdmin,
     getUserPermissions: getUserPermissions,
@@ -31,10 +31,11 @@ const DrawerPanelBase: React.FC<DrawerPanelProps> = ({ panelRef, toggleDrawer })
 
   useEffect(() => {
     if (!isNotificationsDrawerReady) return;
-    debugger;
-    const { state, initialize } = useNotificationsDrawer();
-    const perms = getUserPermissions('notifications');
-    initialize(true, perms);
+    getUserPermissions('notifications').then(perms => {
+      initialize(true, perms);
+    }).catch(err => {
+      console.error('Error fetching user notifications permissions while rendering drawer content', err);
+    });
   }, [isNotificationsDrawerReady]);
 
   return (
@@ -46,10 +47,8 @@ const DrawerPanelBase: React.FC<DrawerPanelProps> = ({ panelRef, toggleDrawer })
 
 const DrawerPanel = React.forwardRef<unknown, Omit<DrawerPanelProps, 'panelRef'>>((props, innerRef) => {
   const isNotificationsDrawerReady = useAtomValue(notificationDrawerReadyAtom);
-  const { DrawerContextProvider } = getSharedScope()[NOTIF_DRAWER_MODULE]['1.0.0'].get();
-  if (isNotificationsDrawerReady) {
-    debugger;
-  }
+  const { DrawerContextProvider } = getSharedScope()[NOTIF_DRAWER_MODULE]?.['1.0.0']?.get();
+
   return (
     <>
       {isNotificationsDrawerReady &&  <DrawerContextProvider>
