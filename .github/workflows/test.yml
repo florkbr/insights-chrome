@@ -99,6 +99,26 @@ jobs:
             component: true
             install-command: npx cypress install
             browser: chrome
+      - uses: actions/upload-artifact@v4
+        # add the line below to store screenshots only on failures
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: warn # 'warn' or 'error' are also available, defaults to `warn`
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: warn # 'warn' or 'error' are also available, defaults to `warn`
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-snapshots
+          path: cypress/snapshots/__diff_output__
+          if-no-files-found: warn # 'warn' or 'error' are also available, defaults to `warn`
+
   # build job
   build:
     needs: [install]
