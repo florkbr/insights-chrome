@@ -1,4 +1,4 @@
-# Insights Chrome
+# Insights Chrome - Test
 
 The "wrapper" around your application!
 
