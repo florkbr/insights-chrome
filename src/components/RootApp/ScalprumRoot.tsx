@@ -94,7 +94,7 @@ const ScalprumRoot = memo(
             path="/lightwell"
             element={
               <Suspense fallback={LoadingFallback}>
-                <Lightwell Footer={<ChromeFooter />} />
+                <Lightwell />
               </Suspense>
             }
           />
