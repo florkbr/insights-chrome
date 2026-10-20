@@ -1,5 +1,8 @@
 import { useFlag } from '@unleash/proxy-client-react';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { LIGHTWELL_BUNDLE_ID } from '../utils/common';
+import { getUrl } from './useBundle';
 
 /**
  * PF 5 and PF6 global font family has a conflict.
@@ -26,6 +29,8 @@ function applyFontFamilyOverride() {
 
 function usePf5Styles() {
   const flagEnabled = useFlag('platform.chrome.pf5');
+  const { pathname } = useLocation();
+  const isLightwellRoute = getUrl('bundle', pathname) === LIGHTWELL_BUNDLE_ID;
   const stylesOverride = localStorage.getItem('@chrome/pf-5-enabled');
   let isEnabled = false;
   if (stylesOverride === 'true' || stylesOverride === 'false') {
@@ -33,6 +38,7 @@ function usePf5Styles() {
   } else {
     isEnabled = flagEnabled;
   }
+  isEnabled = isEnabled && !isLightwellRoute;
   useEffect(() => {
     let link: HTMLLinkElement;
     let overrideStyleElement: HTMLStyleElement | undefined;

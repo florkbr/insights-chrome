@@ -6,6 +6,7 @@
 const initializeTheme = function () {
   try {
     var isLightwellRoute = window.location.pathname.split('/')[1] === 'lightwell';
+    var lightwellRouteClass = 'chr-lightwell-route';
 
     // Apply Felt theme on ALL routes before PatternFly CSS loads.
     // This prevents a flash of non-Felt styles while Unleash feature flags
@@ -14,7 +15,7 @@ const initializeTheme = function () {
     document.documentElement.classList.add('pf-v6-theme-felt');
 
     if (isLightwellRoute) {
-      document.documentElement.classList.add('pf-v6-theme-glass');
+      document.documentElement.classList.add('pf-v6-theme-glass', lightwellRouteClass);
     }
 
     var savedTheme = localStorage.getItem('chrome:theme');

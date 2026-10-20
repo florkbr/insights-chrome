@@ -2,6 +2,8 @@ jest.mock('../components/Header/Header', () => ({
   Header: () => <div data-testid="mock-header">Header</div>,
 }));
 
+jest.mock('./useLightwellApp', () => () => [{ default: jest.fn() }, undefined]);
+
 jest.mock('../components/Stratosphere/RedirectBanner', () => ({
   __esModule: true,
   default: () => <div data-testid="mock-redirect-banner">RedirectBanner</div>,
@@ -40,13 +42,16 @@ jest.mock('@unleash/proxy-client-react', () => ({
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider, createStore } from 'jotai';
-import Lightwell from './Lightwell';
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { activeModuleAtom } from '../state/atoms/activeModuleAtom';
 import { notificationDrawerExpandedAtom } from '../state/atoms/notificationDrawerAtom';
 import { layoutBannerHiddenAtom, layoutForceGlassThemeAtom, layoutLightwellHeaderAtom } from '../state/atoms/releaseAtom';
 import ChromeAuthContext from '../auth/ChromeAuthContext';
 import InternalChromeContext from '../utils/internalChromeContext';
+
+// Load after the local module mocks above are registered.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const Lightwell = require('./Lightwell').default as typeof import('./Lightwell').default;
 
 const mockUser = {
   identity: {
@@ -133,7 +138,7 @@ describe('Lightwell', () => {
   });
 
   afterEach(() => {
-    document.documentElement.classList.remove('pf-v6-theme-felt', 'pf-v6-theme-glass');
+    document.documentElement.classList.remove('pf-v6-theme-felt', 'pf-v6-theme-glass', 'chr-lightwell-route');
   });
 
   it('should render the layout shell', () => {

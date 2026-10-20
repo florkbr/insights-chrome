@@ -8,9 +8,10 @@ const FELT_THEME_CLASS = 'pf-v6-theme-felt';
 const GLASS_THEME_CLASS = 'pf-v6-theme-glass';
 
 const isLightwellRoute = getUrl('bundle') === LIGHTWELL_BUNDLE_ID;
+const LIGHTWELL_ROUTE_CLASS = 'chr-lightwell-route';
 
 if (isLightwellRoute) {
-  document.documentElement.classList.add(FELT_THEME_CLASS, GLASS_THEME_CLASS);
+  document.documentElement.classList.add(FELT_THEME_CLASS, GLASS_THEME_CLASS, LIGHTWELL_ROUTE_CLASS);
 }
 
 type UseLightwellRouteSetupOptions = {
@@ -33,12 +34,12 @@ const useLightwellRouteSetup = ({ enabled = true }: UseLightwellRouteSetupOption
       return;
     }
 
-    document.documentElement.classList.add(FELT_THEME_CLASS, GLASS_THEME_CLASS);
+    document.documentElement.classList.add(FELT_THEME_CLASS, GLASS_THEME_CLASS, LIGHTWELL_ROUTE_CLASS);
     setLayoutForceGlassTheme(true);
     setLayoutForceFeltTheme(true);
 
     return () => {
-      document.documentElement.classList.remove(FELT_THEME_CLASS, GLASS_THEME_CLASS);
+      document.documentElement.classList.remove(FELT_THEME_CLASS, GLASS_THEME_CLASS, LIGHTWELL_ROUTE_CLASS);
       setLayoutForceGlassTheme(false);
       setLayoutForceFeltTheme(false);
     };

@@ -51,6 +51,14 @@ aside {
   min-height: 0;
 }
 
+.chr-c-lightwell-loading {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
 .pf-v6-c-page.chr-c-page {
   .pf-v6-c-page__sidebar {
     border-top-style: solid;

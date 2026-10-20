@@ -4,7 +4,7 @@ import themeBootstrap from '../config/theme-bootstrap';
 import { THEME_STORAGE_KEY } from './utils/consts';
 
 const templates = ['index.ejs', 'indexRes.ejs'] as const;
-const lightwellOnlyClasses = ['pf-v6-theme-glass'];
+const lightwellOnlyClasses = ['pf-v6-theme-glass', 'chr-lightwell-route'];
 const feltClass = 'pf-v6-theme-felt';
 
 const getBootstrapScript = (template: string): string => {
@@ -27,6 +27,15 @@ describe.each(templates)('initial theme bootstrap in %s', (templateName) => {
   beforeEach(() => {
     document.documentElement.className = '';
     localStorage.clear();
+  });
+
+  it('places the Lightwell background rule before the platform stylesheet', () => {
+    const template = readFileSync(resolve(__dirname, templateName), 'utf8');
+    const lightwellStyleIndex = template.indexOf('html.chr-lightwell-route');
+    const platformStylesheetIndex = template.indexOf('href="<%= pf');
+
+    expect(lightwellStyleIndex).toBeGreaterThanOrEqual(0);
+    expect(lightwellStyleIndex).toBeLessThan(platformStylesheetIndex);
   });
 
   it('applies Felt theme on all routes before PF CSS loads', () => {
